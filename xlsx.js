@@ -2546,14 +2546,14 @@ var DRAW_ROOT = writextag('xdr:wsDr', null, {
 });
 
 function write_drawing(images) {
-  console.log("entering write_drawing");
+  //console.log("entering write_drawing");
 	var o = [];
 	o[o.length] = (XML_HEADER);
 	o[o.length] = (DRAW_ROOT);
 
 	for (var i = 0; i < images.length; i++) {
 		var image = images[i];
-    console.log("spr: ", image.spPr);
+    //console.log("image:", image);
 		var pos = image.position || {};
     var skipXFrm = !image.spPr;
 		if (pos.type === 'twoCellAnchor') {
@@ -2573,7 +2573,7 @@ function write_drawing(images) {
 			twoCell    += '<a:extLst><a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}"><a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/></a:ext></a:extLst></a:blip>';
 			twoCell    += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr>';
       if(!skipXFrm){
-        twoCell    += '<a:xfrm><a:off x="'+ image.spPr.xfrm.off.x + '" y= "'+  image.spPr.xfrm.off.y + '"/><a:ext cx="'+ image.spPr.xfrm.ext.cx+ '" cy="'+  image.spPr.xfrm.ext.cy + '"/></a:xfrm>';
+        twoCell    += '<a:xfrm><a:off x="'+ image.spPr.xfrm.off.x + '" y="'+  image.spPr.xfrm.off.y + '"/><a:ext cx="'+ image.spPr.xfrm.ext.cx+ '" cy="'+  image.spPr.xfrm.ext.cy + '"/></a:xfrm>';
       }
       twoCell    += '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
 			o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
@@ -2581,7 +2581,9 @@ function write_drawing(images) {
 	}
 
 	if(o.length>2){ o[o.length] = ('</xdr:wsDr>'); o[1]=o[1].replace("/>",">"); }
-	return o.join("");
+	var response = o.join("");
+	console.log("image response", response);
+	return response;
 }
 /* TODO */
 function write_rels(rels) {
@@ -8012,7 +8014,9 @@ function write_ws_xml(idx, opts, wb) {
     o[o.length] = ('</worksheet>');
     o[1] = o[1].replace("/>", ">");
   }
-  return o.join("");
+  var response = o.join("");
+  //console.log("WS Response", response);
+  return response;
 }
 
 function write_ws_xml_row_breaks(breaks) {
@@ -8739,8 +8743,8 @@ function write_wb_xml(wb, opts) {
         if (printColumns && printHeader)  range += ","
         if (printHeader) range += ("'" + sheetName + "'!" ) +  ("$" + printHeader[0] + ":$" + printHeader[1]);
 
-        console.log("-----------------------------")
-        console.log(range)
+        // console.log("-----------------------------")
+        // console.log(range)
         o[o.length] = (writextag('definedName', range, {
           "name":"_xlnm.Print_Titles",
           localSheetId : ''+i
