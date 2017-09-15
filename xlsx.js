@@ -2582,7 +2582,7 @@ function write_drawing(images) {
 
 	if(o.length>2){ o[o.length] = ('</xdr:wsDr>'); o[1]=o[1].replace("/>",">"); }
 	var response = o.join("");
-	console.log("image response", response);
+	//console.log("image response", response);
 	return response;
 }
 /* TODO */
